@@ -59,13 +59,6 @@
 
 ---
 
-## 📷 Screenshots
-
-![Popup Screenshot](./screenshots/popup-dark.png)  
-*A clean, responsive UI with ambient sound and dark mode controls*
-
----
-
 ## 🧑‍💻 Author
 
 - **Mithilesh Reddy**
