@@ -34,21 +34,6 @@
 
 ---
 
-## 📁 Project Structure
-
-focus-extension/
-├── manifest.json
-├── popup.html
-├── popup.js
-├── popup.css
-├── work.html
-├── break.html
-├── sounds/
-│ ├── rain.wav
-│ └── forest.wav
-
----
-
 ## ⚙️ Customization
 
 - 🕒 Change default session times in `popup.js`
