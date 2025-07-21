@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Focus Timer",
+  "version": "1.1",
+  "description": "A Pomodoro timer with ambient sounds and site blocking.",
+  "permissions": [
+    "storage",
+    "notifications",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "tabs"
+  ],
+  "host_permissions": [
+  "<all_urls>"
+],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+  "default_title": "Focus Timer"
+  },
+  "web_accessible_resources": [
+  {
+    "resources": ["break.html", "work.html"],
+    "matches": ["<all_urls>"]
+  }
+]
+}
