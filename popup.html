@@ -55,13 +55,15 @@
     <!-- Right Panel (Site Blocker + History) -->
     <div class="right-panel">
       <section id="site-blocker">
-        <h3>Blocked Sites</h3>
+        <h3>Add Websites To Block</h3>
+        <label class="site-blocker">
+          <b id="blocker-label">✅ Allow listed sites</b>
+          <input type="checkbox" id="blocker-toggle">
+        </label>
+
         <input type="text" id="siteInput" placeholder="Enter site name like facebook" />
         <button id="addSiteBtn">Add Site</button>
         <ul id="siteList"></ul>
-        <label><b id="blocker-label">🚫 Site Blocker</b>
-          <input type="checkbox" id="blocker-toggle">
-        </label>
       </section>
 
       <section id="history">

@@ -32,6 +32,7 @@ body {
   height: 100vh;
   display: flex;
   justify-content: center;
+  overflow-x: hidden;
 }
 
 #container {
@@ -287,5 +288,35 @@ header h1 {
 ::-webkit-scrollbar-thumb {
   background-color: #555;
   border-radius: 10px;
+}
+
+#site-blocker h3 {
+  margin-bottom: 10px;
+  font-size: 25px;
+}
+
+#history h3 {
+  margin-bottom: 10px;
+  font-size: 25px;
+}
+
+/* For inline label and checkbox alignment */
+label.site-blocker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+#blocker-label {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+#site-blocker #blocker-toggle {
+  width: 15px !important;
+  height: 15px !important;
+  margin-bottom: 0;
 }
 

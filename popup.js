@@ -81,7 +81,6 @@ function startTimer() {
       interval = null;
       isRunning = false;
 
-      // ✅ Open tab only after the first session has completed
       if (hasStartedOnce) {
         const htmlPage = isWorkSession ? "break.html" : "work.html";
         chrome.tabs.create({ url: chrome.runtime.getURL(htmlPage) });
@@ -92,8 +91,8 @@ function startTimer() {
       remainingTime = (isWorkSession ? parseInt(focusInput.value) : parseInt(breakInput.value)) * 60;
       updateDisplay();
 
-      hasStartedOnce = true; // Mark that a session has passed
-      startTimer(); // 🔁 Auto-start next session
+      hasStartedOnce = true;
+      startTimer();
     }
   }, 1000);
 }
@@ -110,7 +109,7 @@ function resetTimer() {
   isRunning = false;
   isWorkSession = true;
   remainingTime = parseInt(focusInput.value) * 60;
-  hasStartedOnce = false;  // Reset notification flag
+  hasStartedOnce = false;
   updateDisplay();
 }
 
@@ -155,20 +154,22 @@ blockToggle.onchange = () => {
   chrome.runtime.sendMessage({
     action: blockToggle.checked ? "startFocusTime" : "endFocusTime"
   });
+
+  // Update the allowlist rules when toggled
+  chrome.runtime.sendMessage({ action: "updateBlockList" });
 };
 
 updateDisplay();
 loadTheme();
 loadHistory();
 
-
 const siteInput = document.getElementById("siteInput");
 const addSiteBtn = document.getElementById("addSiteBtn");
 const siteList = document.getElementById("siteList");
 
-// Load blocked sites on startup
-chrome.storage.local.get("blockedSites", (data) => {
-  const sites = data.blockedSites || [];
+// Load allowed sites on startup
+chrome.storage.local.get("allowedSites", (data) => {
+  const sites = data.allowedSites || [];
   sites.forEach(site => addSiteToUI(site));
 });
 
@@ -183,24 +184,26 @@ function addSiteToUI(site) {
 }
 
 function removeSite(site, liElement) {
-  chrome.storage.local.get("blockedSites", (data) => {
-    let sites = data.blockedSites || [];
+  chrome.storage.local.get("allowedSites", (data) => {
+    let sites = data.allowedSites || [];
     sites = sites.filter(s => s !== site);
-    chrome.storage.local.set({ blockedSites: sites });
+    chrome.storage.local.set({ allowedSites: sites });
     liElement.remove();
+    chrome.runtime.sendMessage({ action: "updateBlockList" });
   });
 }
 
 addSiteBtn.addEventListener("click", () => {
   const site = siteInput.value.trim();
   if (!site) return;
-  chrome.storage.local.get("blockedSites", (data) => {
-    const sites = data.blockedSites || [];
+  chrome.storage.local.get("allowedSites", (data) => {
+    const sites = data.allowedSites || [];
     if (!sites.includes(site)) {
       sites.push(site);
-      chrome.storage.local.set({ blockedSites: sites });
+      chrome.storage.local.set({ allowedSites: sites });
       addSiteToUI(site);
       siteInput.value = "";
+      chrome.runtime.sendMessage({ action: "updateBlockList" });
     }
   });
 });
@@ -209,7 +212,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const themeToggle = document.getElementById("toggle-theme");
   const root = document.documentElement;
 
-  // Load saved theme
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "dark") {
     root.classList.add("dark");
